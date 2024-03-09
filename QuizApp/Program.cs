@@ -1,63 +1,37 @@
-﻿namespace QuizApp
+﻿using Newtonsoft.Json;
+
+namespace QuizApp
 {
 	internal class Program
 	{
 		static void Main(string[] args)
 		{
-			string path = "C:\\Users\\Alexa\\Desktop\\test\\1.txt";
-			string[] taxt = File.ReadAllLines(path);
+			string json = File.ReadAllText("C:\\Users\\Alexa\\Desktop\\test\\q.json");
+			AllQuestions questionsData = JsonConvert.DeserializeObject<AllQuestions>(json);
 
-			for (int j = 0; j < taxt.Length; j++)
+			int rightAnswersCount = 0;
+			foreach (QuestionDescription description in questionsData.Questions)
 			{
-				taxt[j] = taxt[j].TrimEnd('*');
-			}
-			NumberQ(taxt);
-
-		}
-
-		static void NumberQ(string[] taxt)
-		{
-			int result;
-			int point = 0;
-			int count;
-
-			for (int i = 1; i < 11; i++)
-			{
-				for (int k = (i - 1) * 6; k < i * 6 && k < taxt.Length; k++)
+				int answerNumber = 1;
+				Console.WriteLine(description.Question);
+				foreach (string answer in description.Answers)
 				{
-					Console.WriteLine(taxt[k]);
+					Console.WriteLine($"{answerNumber++}. {answer}");
 				}
-				Console.WriteLine("Choose the answer: ");
 
-				try
+				int userAnswer;
+				while (!int.TryParse(Console.ReadLine(), out userAnswer))
 				{
-					result = int.Parse(Console.ReadLine());
+					Console.WriteLine("Try again");
 				}
-				catch (Exception)
-				{
-					Console.WriteLine("Недопустимый вариант\n");
-					break;
-				}
-				string path = "C:\\Users\\Alexa\\Desktop\\test\\1.txt";
-				string[] taxtFifst = File.ReadAllLines(path);
 
-				if (i == 1)
+				if (userAnswer == description.RightIndex + 1)
 				{
-					count = result;
-				}
-				else
-				{
-					count = ((i - 1) * 6) + result;
-				}
-				string answer = taxtFifst[count];
-
-
-				if (answer.EndsWith('*'))
-				{
-					point += 1;
+					rightAnswersCount += 1;
 				}
 			}
-			Console.WriteLine($"your points = {point}");
+
+			Console.WriteLine($"You have {rightAnswersCount} right answers from {questionsData.Questions.Count} \n");
 		}
 	}
 }
