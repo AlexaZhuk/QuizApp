@@ -1,63 +1,40 @@
-﻿namespace QuizApp
+﻿using Newtonsoft.Json;
+
+namespace QuizApp
 {
 	internal class Program
 	{
 		static void Main(string[] args)
 		{
-			string path = "C:\\Users\\Alexa\\Desktop\\test\\1.txt";
-			string[] taxt = File.ReadAllLines(path);
 
-			for (int j = 0; j < taxt.Length; j++)
+			string json = File.ReadAllText("C:\\Users\\Alexa\\Desktop\\test\\q.json");
+			AllQuestions info = JsonConvert.DeserializeObject<AllQuestions>(json);
+
+			int count = 0;
+			int countAmswer = 1;
+
+			foreach (var quDescription in info.Questions)
 			{
-				taxt[j] = taxt[j].TrimEnd('*');
-			}
-			NumberQ(taxt);
+				Console.WriteLine(quDescription.Question);
+				foreach (var item in quDescription.Answers)
 
-		}
-
-		static void NumberQ(string[] taxt)
-		{
-			int result;
-			int point = 0;
-			int count;
-
-			for (int i = 1; i < 11; i++)
-			{
-				for (int k = (i - 1) * 6; k < i * 6 && k < taxt.Length; k++)
 				{
-					Console.WriteLine(taxt[k]);
+					Console.WriteLine($"{countAmswer++}. {item}");
 				}
-				Console.WriteLine("Choose the answer: ");
 
-				try
-				{
-					result = int.Parse(Console.ReadLine());
-				}
-				catch (Exception)
-				{
-					Console.WriteLine("Недопустимый вариант\n");
-					break;
-				}
-				string path = "C:\\Users\\Alexa\\Desktop\\test\\1.txt";
-				string[] taxtFifst = File.ReadAllLines(path);
+				int userAnswer;
 
-				if (i == 1)
+				while (!int.TryParse(Console.ReadLine(), out userAnswer))
 				{
-					count = result;
+					Console.WriteLine("Try again");
 				}
-				else
-				{
-					count = ((i - 1) * 6) + result;
-				}
-				string answer = taxtFifst[count];
 
-
-				if (answer.EndsWith('*'))
+				if (userAnswer == quDescription.RightIndex + 1)
 				{
-					point += 1;
+					count += 1;
 				}
 			}
-			Console.WriteLine($"your points = {point}");
+			Console.WriteLine($"You have {count} right answers from {info.Questions.Count} \n");
 		}
 	}
 }
