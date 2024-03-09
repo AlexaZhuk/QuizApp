@@ -1,4 +1,4 @@
-﻿namespace QuizApp
+﻿namespace QuizApp.Questions
 {
 	internal class AllQuestions
 	{
