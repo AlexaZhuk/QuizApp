@@ -14,8 +14,7 @@ namespace QuizApp
 			AllQuestions questionsData = JsonConvert.DeserializeObject<AllQuestions>(json);
 
 			int rightAnswersCount = 0;
-			List<AnswerDetail> userAnswers = new List<AnswerDetail>();
-
+			List<AnswerDetail> details = new List<AnswerDetail>();
 			foreach (QuestionDescription description in questionsData.Questions)
 			{
 				int answerNumber = 1;
@@ -36,30 +35,25 @@ namespace QuizApp
 				if (userAnswer == description.RightIndex + 1)
 				{
 					rightAnswersCount += 1;
-					detail.IsRight = true;
+					detail.IsCorrect = true;
 				}
 				else
 				{
-					detail.IsRight = false;
+					detail.IsCorrect = false;
 				}
-				userAnswers.Add(detail);
+				details.Add(detail);
 			}
 
 			Console.WriteLine($"You have {rightAnswersCount} right answers from {questionsData.Questions.Count} \n");
 
-			TestResult testResult = new TestResult();
+			QuizResult testResult = new QuizResult();
 			testResult.WrongAnswers = questionsData.Questions.Count - rightAnswersCount;
-			testResult.RightAnswers = rightAnswersCount;
-			testResult.Details = userAnswers;
+			testResult.CorrectAnswers = rightAnswersCount;
+			testResult.Details = details;
 
 			string path = $"C:\\Users\\Alexa\\Desktop\\test\\{userName}_{DateTime.Now:dd-MM-yyyy_hh-mm-ss}.json";
 			string resultTry = JsonConvert.SerializeObject(testResult);
 			File.WriteAllText(path, resultTry);
-
-
-
 		}
-
-
 	}
 }

@@ -1,11 +1,9 @@
 ﻿namespace QuizApp.Results
 {
-	internal class TestResult
+	internal class QuizResult
 	{
-		public int RightAnswers { get; set; }
+		public int CorrectAnswers { get; set; }
 		public int WrongAnswers { get; set; }
-
 		public List<AnswerDetail> Details { get; set; }
-
 	}
 }
