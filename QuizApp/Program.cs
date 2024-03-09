@@ -8,33 +8,32 @@ namespace QuizApp
 		{
 
 			string json = File.ReadAllText("C:\\Users\\Alexa\\Desktop\\test\\q.json");
-			AllQuestions info = JsonConvert.DeserializeObject<AllQuestions>(json);
+			AllQuestions questionsData = JsonConvert.DeserializeObject<AllQuestions>(json);
 
 			int count = 0;
-			int countAmswer = 1;
 
-			foreach (var quDescription in info.Questions)
+			foreach (QuestionDescription description in questionsData.Questions)
 			{
-				Console.WriteLine(quDescription.Question);
-				foreach (var item in quDescription.Answers)
+				int countAnswer = 1;
+				Console.WriteLine(description.Question);
+				foreach (string item in description.Answers)
 
 				{
-					Console.WriteLine($"{countAmswer++}. {item}");
+					Console.WriteLine($"{countAnswer++}. {item}");
 				}
 
 				int userAnswer;
-
 				while (!int.TryParse(Console.ReadLine(), out userAnswer))
 				{
 					Console.WriteLine("Try again");
 				}
 
-				if (userAnswer == quDescription.RightIndex + 1)
+				if (userAnswer == description.RightIndex + 1)
 				{
 					count += 1;
 				}
 			}
-			Console.WriteLine($"You have {count} right answers from {info.Questions.Count} \n");
+			Console.WriteLine($"You have {count} right answers from {questionsData.Questions.Count} \n");
 		}
 	}
 }
