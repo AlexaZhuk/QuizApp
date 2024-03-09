@@ -17,14 +17,13 @@
 
 		static void NumberQ(string[] taxt)
 		{
-			int k = 1;
 			int result;
 			int point = 0;
-			int count = 0;
+			int count;
 
 			for (int i = 1; i < 11; i++)
 			{
-				for (k = (i - 1) * 6; k < i * 6 && k < taxt.Length; k++)
+				for (int k = (i - 1) * 6; k < i * 6 && k < taxt.Length; k++)
 				{
 					Console.WriteLine(taxt[k]);
 				}
@@ -57,10 +56,8 @@
 				{
 					point += 1;
 				}
-
 			}
 			Console.WriteLine($"your points = {point}");
-
 		}
 	}
 }
